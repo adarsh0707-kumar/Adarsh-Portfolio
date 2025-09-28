@@ -1,0 +1,36 @@
+.contactPage{
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  right: 50%;
+}
+
+.contactPage__box{
+  width: 35%;
+  height: auto;
+  text-align: center;
+  border-radius: 15px;
+  /* box-shadow: 0 4px 8px #3f3f3f83; */
+}
+
+.contactPage__box__item{
+  display: flex;
+  flex-direction: row;
+  font-size: 24px;
+  color: #fff;
+  text-align: justify;
+  align-items: center;
+  /* justify-content: space-between; */
+}
+
+.contactPage__box__item__icon{
+  margin: 0 1rem;
+  border: 1px solid white;
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  /* margin-top: 15px; */
+  /* border-radius: 50%; */
+}
