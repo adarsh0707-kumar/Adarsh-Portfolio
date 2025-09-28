@@ -1,10 +1,10 @@
 
 import './App.css'
 import React from 'react'
-import Skill from './components/Skill'
-import Project from './components/Project'
-import Contact from './components/Contact'
-import Dashboard from './components/Dashboard'
+import Skill from './components/Skill/Skill'
+import Project from './components/Project/Project'
+import Contact from './components/Contact/Contact'
+import Dashboard from './components/Home/Dashboard'
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
