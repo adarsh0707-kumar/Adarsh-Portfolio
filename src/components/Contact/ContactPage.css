@@ -1,4 +1,4 @@
-.contactPage{
+/* .contactPage{
   display: flex;
   height: 100vh;
   justify-content: center;
@@ -12,7 +12,7 @@
   height: auto;
   text-align: center;
   border-radius: 15px;
-  /* box-shadow: 0 4px 8px #3f3f3f83; */
+  box-shadow: 0 4px 8px #3f3f3f83;
 }
 
 .contactPage__box__item{
@@ -22,7 +22,7 @@
   color: #fff;
   text-align: justify;
   align-items: center;
-  /* justify-content: space-between; */
+  justify-content: space-between;
 }
 
 .contactPage__box__item__icon{
@@ -33,4 +33,57 @@
   padding: 10px;
   /* margin-top: 15px; */
   /* border-radius: 50%; */
+/* } */ */
+
+
+.contact-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.contact-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.contact-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.contact-form button {
+  display: block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.contact-form button:hover {
+  background-color: #0056b3;
+}
+
+.status-message {
+  margin-top: 20px;
+  text-align: center;
+  color: green;
 }
