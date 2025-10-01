@@ -78,8 +78,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@latest/dist/email.min.js"></script>
     <script>
       (function () {
-        // initialize with your Public Key (User ID)
-        emailjs.init('YOUR_PUBLIC_KEY');
+        const publicKey = import.meta.env.YOUR_PUBLIC_KEY;
+        emailjs.init(publicKey);
       })();
 
       document.getElementById('contact-form').addEventListener('submit', function (event) {
@@ -89,8 +89,12 @@
         const statusDiv = document.getElementById('status');
         statusDiv.innerText = "Sending...";
 
+        const serviceId = import.meta.env.YOUR_SERVICE_ID;
+    
+        const templateId = import.meta.env.YOUR_TEMPLATE_ID;
+
         // Use sendForm to send the form
-        emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
+        emailjs.sendForm(serviceId, templateId, this)
           .then(function (response) {
             console.log('SUCCESS!', response.status, response.text);
             statusDiv.style.color = "green";

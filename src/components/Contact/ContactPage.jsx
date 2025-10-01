@@ -1,17 +1,19 @@
 import React, { useRef, useEffect, useState } from "react";
 import emailjs from "@emailjs/browser";
 import "./ContactPage.css";
-import dotenv from 'dotenv';
 
 
 const ContactPage = () => {
   const formRef = useRef(null);
   const [status, setStatus] = useState("");
-  dotenv.config();
+
+  const serviceId = import.meta.env.YOUR_SERVICE_ID;
+  const templateId = import.meta.env.YOUR_TEMPLATE_ID;
+
 
   useEffect(() => {
-    // eslint-disable-next-line no-undef
-    const publicKey = process.env.YOUR_PUBLIC_KEY;
+    const publicKey = import.meta.env.YOUR_PUBLIC_KEY;
+    
     if (!publicKey) {
       console.error("Missing EmailJS public key in environment variables");
     } else {
@@ -23,10 +25,6 @@ const ContactPage = () => {
     e.preventDefault();
     if (!formRef.current) return;
 
-    // eslint-disable-next-line no-undef
-    const serviceId = process.env.YOUR_SERVICE_ID;
-    // eslint-disable-next-line no-undef
-    const templateId = process.env.YOUR_TEMPLATE_ID;
 
     if (!serviceId || !templateId) {
       console.error("Missing EmailJS service or template ID in env");
@@ -43,7 +41,7 @@ const ContactPage = () => {
           formRef.current.reset();
         },
         (error) => {
-          console.error("Failed to send email:", error.text);
+          console.error("Failed to send email:", error);
           setStatus("Failed to send message, please try again.");
         }
       );
