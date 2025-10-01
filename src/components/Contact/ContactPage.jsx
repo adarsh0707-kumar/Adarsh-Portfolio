@@ -1,142 +1,72 @@
-// import React from 'react'
-// import "../Contact/ContactPage.css"
-// import { MdEmail } from 'react-icons/md';
-// import { FaPhone } from 'react-icons/fa';
-// import { IoLogoWhatsapp } from 'react-icons/io5';
-// 
-// const ContactPage = () => {
-//   return (
-//     <div className='contactPage'>
-//       <div className="contactPage__box">
-//         <h1>Contact Me</h1>
-//         <div className='contactPage__box__item'>
-//           <MdEmail
-//             className='contactPage__box__item__icon'
-//             size={25}
-//             style={{color : 'white'}}
-//           />
-//           <p>Email : <a href="mailto:adarshku123456789@gmail.com" target='_blank'> <span> adarshku123456789@gmail.com</span></a></p>
-//         </div>
-// 
-//         <div className='contactPage__box__item'>
-//           <FaPhone
-//             size={25}
-//             className='contactPage__box__item__icon'
-//             style={{ color: 'white' }}
-//           />
-//           <p>Phone : +91 7209798901</p>
-//         </div>
-// 
-//         <div className='contactPage__box__item'>
-//           <IoLogoWhatsapp 
-//             className='contactPage__box__item__icon'
-//             size={25}
-//             style={{ color: 'white' }}
-//           />
-//           <p>WhatsApp : +91 7209798901</p>
-//         </div>
-// 
-//         
-//       </div>
-// 
-//     </div>
-//   )
-// }
-// 
-// export default ContactPage;
-
-
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import emailjs from "@emailjs/browser";
 import "./ContactPage.css";
+import dotenv from 'dotenv';
+
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const formRef = useRef(null);
+  const [status, setStatus] = useState("");
+  dotenv.config();
 
-  const [status, setStatus] = useState("");  // to show success / error
+  useEffect(() => {
+    // eslint-disable-next-line no-undef
+    const publicKey = process.env.YOUR_PUBLIC_KEY;
+    if (!publicKey) {
+      console.error("Missing EmailJS public key in environment variables");
+    } else {
+      emailjs.init(publicKey);
+    }
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formRef.current) return;
 
-    // Basic validation (example)
-    if (!formData.name || !formData.email || !formData.message) {
-      setStatus("Please fill all fields.");
+    // eslint-disable-next-line no-undef
+    const serviceId = process.env.YOUR_SERVICE_ID;
+    // eslint-disable-next-line no-undef
+    const templateId = process.env.YOUR_TEMPLATE_ID;
+
+    if (!serviceId || !templateId) {
+      console.error("Missing EmailJS service or template ID in env");
+      setStatus("Configuration error");
       return;
     }
 
-    try {
-      // Example: send to your backend API
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    emailjs
+      .sendForm(serviceId, templateId, formRef.current)
+      .then(
+        (result) => {
+          console.log("Email sent:", result.text);
+          setStatus("Message sent successfully!");
+          formRef.current.reset();
         },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setStatus("Message sent successfully!");
-        // Clear form
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus("Failed to send message.");
-      }
-    } catch (err) {
-      console.error("Error submitting form:", err);
-      setStatus("An error occurred, please try again later.");
-    }
+        (error) => {
+          console.error("Failed to send email:", error.text);
+          setStatus("Failed to send message, please try again.");
+        }
+      );
   };
 
   return (
     <div className="contact-container">
       <h2>Contact Us</h2>
-      <form className="contact-form" onSubmit={handleSubmit}>
+      <form className="contact-form" ref={formRef} onSubmit={handleSubmit}>
         <label>
           Name:
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Your name"
-          />
+          <input type="text" name="from_name" placeholder="Your name" required />
         </label>
-
         <label>
           Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="you@example.com"
-          />
+          <input type="email" name="reply_to" placeholder="you@example.com" required />
         </label>
-
         <label>
           Message:
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            placeholder="Your message..."
-          />
+          <textarea name="message" placeholder="Your message..." required />
         </label>
-
         <button type="submit">Send</button>
       </form>
-
       {status && <p className="status-message">{status}</p>}
     </div>
   );
